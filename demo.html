@@ -12,23 +12,26 @@
     </style>
 </head>
 <body>
-    <input type='button' id='textBtn' style="float:right;position: fixed;bottom: 10px;right:10px;" value='Context'/>
+    <input type='button' id='textBtn' value='Context'/>
     <script>
         let parentControl = document.getElementById('textBtn');
         parentControl.addEventListener('click',function(){
-            new contextual.menu([
-                {title:'Item 1', tip:'Ctrl+A', icon:'/' ,onclick: function(){console.log('Item 1 clicked');}},
-                {seperator:true},
-                {title:'Item 2', tip:'', icon:'/', children: [
-                    {title:'Subitem 1', tip:'', icon:'/', onclick: function(){}},
-                    {title:'Subitem 2', tip:'', icon:'/', onclick: function(){}},
-                    {title:'Subitem 3', tip:'', icon:'/', onclick: function(){}}
-                ]},
-                {title:'Item 3', tip:'Ctrl+B', onclick: function(){}},
-                {seperator:true},
-                {title:'Item 4', tip:'', onclick: function(){console.log('Item 4 clicked');}},
-                {title:'Item 5', tip:'Ctrl+C', icon:'/', onclick: function(){}} 
-            ]);
+            new contextualMenu({
+                docked:false,
+                items:[
+                    {title:'Item 1', tip:'Ctrl+A', icon:'/' ,onclick: function(){console.log('Item 1 clicked');}},
+                    {seperator:true},
+                    {title:'Item 2', tip:'', icon:'/', children: [
+                        {title:'Subitem 1', tip:'', icon:'/', onclick: function(){}},
+                        {title:'Subitem 2', tip:'', icon:'/', onclick: function(){}},
+                        {title:'Subitem 3', tip:'', icon:'/', onclick: function(){}}
+                    ]},
+                    {title:'Item 3', tip:'Ctrl+B', onclick: function(){}},
+                    {seperator:true},
+                    {title:'Item 4', tip:'', onclick: function(){console.log('Item 4 clicked');}},
+                    {title:'Item 5', tip:'Ctrl+C', icon:'/', onclick: function(){}}
+                ]
+            });
         });
     </script>
 </body>
