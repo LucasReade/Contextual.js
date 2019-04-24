@@ -4,11 +4,12 @@
     font-size: 13px;
     position: absolute;
     padding: 8px 0;
-    background: #ffffff;
-    box-shadow: 1px 1px 10px #999;
+    background: rgb(37, 37, 38);
+    box-shadow: 1px 1px 10px #000;
     border-radius: 3px;
     margin:0;
     list-style: none;
+    color: #cccccc;
 }
 .contextualMenuHidden{
     display: none;
@@ -20,7 +21,7 @@
     cursor: default;
 }
 .contextualMenuItem:hover{
-    background: #b4e6ff;
+    background: #080a79;
 }
 
     .contextualMenuItemIcon{
@@ -74,13 +75,13 @@
      list-style: none;
      border-top:1px solid #999;
      border-bottom: 1px solid #999;
-     box-shadow: inset 0px 0px 15px #5d5d5d ;
+     box-shadow: inset 0px 0px 15px #000 ;
  }
  .contextualSubMenu .contextualMenuItem{
     
  }
  .contextualSubMenu .contextualMenuItem:hover{
-    background: #4492d6;
+    background: #080a79;
  }
  .SubMenuActive{
     

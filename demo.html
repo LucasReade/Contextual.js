@@ -6,9 +6,10 @@
     <title>Contentual Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="contextual.css">
-    <script src="contentual.js"></script>
+    <script src="./contentual.js"></script>
     <style>
         *{font-family: Verdana, Geneva, Tahoma, sans-serif;}
+        body{background: rgb(30, 30, 30);}
     </style>
 </head>
 <body>
@@ -16,21 +17,21 @@
     <script>
         let parentControl = document.getElementById('textBtn');
         parentControl.addEventListener('click',function(){
-            new contextualMenu({
-                docked:false,
-                items:[
-                    {title:'Item 1', tip:'Ctrl+A', icon:'/' ,onclick: function(){console.log('Item 1 clicked');}},
-                    {seperator:true},
-                    {title:'Item 2', tip:'', icon:'/', children: [
-                        {title:'Subitem 1', tip:'', icon:'/', onclick: function(){}},
-                        {title:'Subitem 2', tip:'', icon:'/', onclick: function(){}},
-                        {title:'Subitem 3', tip:'', icon:'/', onclick: function(){}}
-                    ]},
-                    {title:'Item 3', tip:'Ctrl+B', onclick: function(){}},
-                    {seperator:true},
-                    {title:'Item 4', tip:'', onclick: function(){console.log('Item 4 clicked');}},
-                    {title:'Item 5', tip:'Ctrl+C', icon:'/', onclick: function(){}}
-                ]
+            new Contextual.Menu({
+            position: contextualCore.position.docked,
+            items:[
+                new Contextual.Item('Item 1','Ctrl+A','/',() => {console.log('Item 1 clicked')}),
+                new Contextual.Seperator(),
+                new Contextual.ChildMenu('Item 2','','/',[
+                    new Contextual.Item('Subitem 1','','/',() => {}),
+                    new Contextual.Item('Subitem 2','','/',() => {}),
+                    new Contextual.Item('Subitem 3','','/',() => {}),
+                ]),
+                new Contextual.Item('Item 3','Ctrl+B','/',() => {}),
+                new Contextual.Seperator(),
+                new Contextual.Item('Item 4','','/',() => {console.log('Item 4 clicked')}),
+                new Contextual.Item('Item 5','Ctrl+C','/',() => {}),
+            ]
             });
         });
     </script>

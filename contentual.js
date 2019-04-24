@@ -1,27 +1,144 @@
-class contextualMenu{
-    constructor(opts){
-        event.stopPropagation();   
-        contextualCoreFunctions.CloseMenu();
-
-        this.docked = opts.docked != null ? opts.docked : false;
-        this.menuControl = contextualCoreFunctions.BuildMenu(opts.items);
-        
-        document.body.appendChild(this.menuControl);
-        contextualCoreFunctions.PositionMenu(this.docked, event, this.menuControl);
-
-        document.onclick = function(e){
-            if(!e.target.classList.contains('contextualJs')){
-                let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)')
-                if(openMenuItem != null){
-                    document.body.removeChild(openMenuItem);
-                }
-            }
-        }
-        
-    }
+class ContextualMenuElement{
+    element
 }
 
-const contextualCoreFunctions = {
+const Contextual = {
+    Menu: class {
+        /**
+         * 
+         * @param {object} opts
+         * @param {contextualCore.position} opts.position
+         * @param {Array<ContextualMenuElement>} opts.items
+         */
+        constructor(opts){   
+            contextualCore.CloseMenu();
+
+            this.position = opts.position != null ? opts.position : false;
+            this.menuControl = contextualCore.CreateEl(`<ul class='contextualJs contextualMenu'></ul>`);
+            opts.items.forEach(i => {
+                this.menuControl.appendChild(i.element);
+            });
+            
+            if(event != undefined){
+                event.stopPropagation()
+                document.body.appendChild(this.menuControl);
+                contextualCore.PositionMenu(this.position, event, this.menuControl);        
+            }
+
+            document.onclick = function(e){
+                if(!e.target.classList.contains('contextualJs')){
+                    contextualCore.CloseMenu();
+                }
+            }    
+        }
+        /**
+         * 
+         * @param {ContextualMenuElement} item 
+         */
+        add(item){
+            this.menuControl.appendChild(item);
+        }
+        show(){
+            event.stopPropagation()
+            document.body.appendChild(this.menuControl);
+            contextualCore.PositionMenu(this.position, event, this.menuControl);    
+        }
+        hide(){
+            event.stopPropagation()
+            contextualCore.CloseMenu();
+        }
+        toggle(){
+            event.stopPropagation()
+            if(this.menuControl.parentElement != document.body){
+                document.body.appendChild(this.menuControl);
+                contextualCore.PositionMenu(this.position, event, this.menuControl);        
+            }else{
+                contextualCore.CloseMenu();
+            }
+        }
+    },
+    Item: class extends ContextualMenuElement{
+        /**
+         * 
+         * @param {string} title 
+         * @param {string} hint 
+         * @param {string} icon 
+         * @param {void} onclick 
+         */
+        constructor(title, hint, icon, onclick){
+            super();
+            this.element = contextualCore.CreateEl( `
+            <li class='contextualJs'>
+                <div class='contextualJs contextualMenuItem'>
+                    <img src='${icon}' class='contextualJs contextualMenuItemIcon'/>
+                    <span class='contextualJs contextualMenuItemTitle'>${title}</span>
+                    <span class='contextualJs contextualMenuItemOverflow hidden'>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                    </span>
+                    <span class='contextualJs contextualMenuItemTip'>${hint}</span>
+                </div>
+                <ul class='contextualJs contextualSubMenu contextualMenuHidden'></ul>
+            </li>`); 
+            
+            this.element.addEventListener('click', function(){
+                event.stopPropagation(); 
+                onclick();
+                contextualCore.CloseMenu();
+            });
+        }
+    },
+    Seperator: class extends ContextualMenuElement{
+        constructor(){
+            super();
+            this.element = contextualCore.CreateEl(`<li class='contextualJs contextualMenuSeperator'><div></div></li>`)
+        }
+    },
+    ChildMenu: class extends ContextualMenuElement{
+        /**
+         * 
+         * @param {string} title 
+         * @param {string} hint 
+         * @param {string} icon 
+         * @param {Array<ContextualMenuElement>} children 
+         */
+        constructor(title, hint, icon, children){        
+            super();        
+            this.element = contextualCore.CreateEl(`
+            <li class='contextualJs'>
+                <div class='contextualJs contextualMenuItem'>
+                    <img src='${icon}' class='contextualJs contextualMenuItemIcon'/>
+                    <span class='contextualJs contextualMenuItemTitle'>${title}</span>
+                    <span class='contextualJs contextualMenuItemOverflow'>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                    </span>
+                    <span class='contextualJs contextualMenuItemTip'>${hint}</span>
+                </div>
+                <ul class='contextualJs contextualSubMenu contextualMenuHidden'></ul>
+            </li>`);
+
+            let childMenu = this.element.querySelector('.contextualSubMenu');
+                    
+            children.forEach(i => {
+                childMenu.appendChild(i.element);
+            });
+                    
+            this.element.addEventListener('click',function(e){
+                e.currentTarget.classList.toggle('SubMenuActive');
+                childMenu.classList.toggle('contextualMenuHidden');
+            });
+        }
+    },
+}
+
+const contextualCore = {
+    position: {
+        docked: true,
+        free: false,
+    },
     PositionMenu: (docked, el, menu) => {
         if(docked){
             menu.style.left = ((el.target.offsetLeft + menu.offsetWidth) >= window.innerWidth) ? 
@@ -41,65 +158,13 @@ const contextualCoreFunctions = {
                     : (el.clientY)+"px";
         }
     },
-    BuildMenu: (menuOptions) => {
-        let menuEl = contextualCoreFunctions.createEl(`<ul class='contextualJs contextualMenu'></ul>`);
-        menuOptions.forEach(element => {menuEl.appendChild(contextualCoreFunctions.BuildMenuItem(element));})
-        return menuEl;
-    },
-    BuildMenuItem: (item) => {
-        if(item.seperator){
-            return contextualCoreFunctions.createEl(`<li class='contextualJs contextualMenuSeperator'><div></div></li>`);
-        }else{
-            let overflowClasses = 'contextualJs contextualMenuItemOverflow';
-            if (item.children == undefined){overflowClasses += ' hidden';}
-    
-            let MenuItem = contextualCoreFunctions.createEl( `
-            <li class='contextualJs'>
-                <div class='contextualJs contextualMenuItem'>
-                    <img src='${item.icon}' class='contextualJs contextualMenuItemIcon'/>
-                    <span class='contextualJs contextualMenuItemTitle'>${item.title}</span>
-                    <span class='${overflowClasses}'>
-                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
-                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
-                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
-                    </span>
-                    <span class='contextualJs contextualMenuItemTip'>${item.tip}</span>
-                </div>
-                <ul class='contextualJs contextualSubMenu contextualMenuHidden'></ul>
-            </li>`);
-    
-            if(item.children){
-                let childMenu = MenuItem.querySelector('.contextualSubMenu');
-                
-                item.children.forEach(i => {
-                    childMenu.appendChild(contextualCoreFunctions.BuildMenuItem(i));
-                });
-                
-                MenuItem.addEventListener('click',function(){
-                    MenuItem.classList.toggle('SubMenuActive');
-                    childMenu.classList.toggle('contextualMenuHidden');
-                });
-            }else{
-                MenuItem.addEventListener('click', function(){
-                    event.stopPropagation(); 
-                    item.onclick();
-                    let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)')
-                    if(openMenuItem != null){
-                        document.body.removeChild(openMenuItem);
-                    }
-                });
-            }
-            return MenuItem;
-        }
-    },
     CloseMenu: () => {
         let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)');
         if(openMenuItem != null){ document.body.removeChild(openMenuItem); }      
     },
-    createEl: (template) => {
+    CreateEl: (template) => {
         var el = document.createElement('div');
         el.innerHTML = template;
         return el.firstElementChild;
     }
 };
-
