@@ -1,5 +1,3 @@
-.contextualJs{}
-
 .contextualMenu{
     font-size: 13px;
     position: absolute;
@@ -40,11 +38,9 @@
         padding: 0px 7px 0px 50px;
         text-align: right;
         line-height: 16px;
-        display: inline-block;
     }
     .contextualMenuItemOverflow{
         float: right;
-        display: inline-block;
         width:16px;
         height: 16px;
         padding: 1px 0px 0px 0px;
@@ -77,12 +73,7 @@
      border-bottom: 1px solid #999;
      box-shadow: inset 0px 0px 15px #000 ;
  }
- .contextualSubMenu .contextualMenuItem{
-    
- }
+ 
  .contextualSubMenu .contextualMenuItem:hover{
     background: #080a79;
- }
- .SubMenuActive{
-    
  }

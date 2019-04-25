@@ -16,24 +16,24 @@
     <input type='button' id='textBtn' value='Context'/>
     <script>
         let parentControl = document.getElementById('textBtn');
-        parentControl.addEventListener('click',function(){
-            new Contextual.Menu({
-            position: contextualCore.position.docked,
+        parentControl.addEventListener('click', () => {
+            new Contextual({
+            isSticky: false,
             items:[
-                new Contextual.Item('Item 1','Ctrl+A','/',() => {console.log('Item 1 clicked')}),
-                new Contextual.Seperator(),
-                new Contextual.ChildMenu('Item 2','','/',[
-                    new Contextual.Item('Subitem 1','','/',() => {}),
-                    new Contextual.Item('Subitem 2','','/',() => {}),
-                    new Contextual.Item('Subitem 3','','/',() => {}),
-                ]),
-                new Contextual.Item('Item 3','Ctrl+B','/',() => {}),
-                new Contextual.Seperator(),
-                new Contextual.Item('Item 4','','/',() => {console.log('Item 4 clicked')}),
-                new Contextual.Item('Item 5','Ctrl+C','/',() => {}),
+                new ContextualItem({label:'Item 1', onClick: () => {console.log('Item 1 clicked')}, shortcut:'Ctrl+A' }),
+                new ContextualItem({type:'seperator'}),
+                new ContextualItem({type:'submenu', label:'Item 2', submenu:[
+                    new ContextualItem({label:'Subitem 1'}),
+                    new ContextualItem({label:'Subitem 2'}),
+                    new ContextualItem({label:'Subitem 3'}),
+                ]}),
+                new ContextualItem({label:'Item 3', shortcut:'Ctrl+B' }),
+                new ContextualItem({type:'seperator'}),
+                new ContextualItem({label:'Item 4', shortcut:'Ctrl+A' }),
+                new ContextualItem({label:'Item 5', shortcut:'Ctrl+C' }),
             ]
             });
-        });
+        }, false);
     </script>
 </body>
 </html>
