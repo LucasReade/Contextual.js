@@ -9,7 +9,10 @@ class Contextual{
         contextualCore.CloseMenu();
 
         this.position = opts.isSticky != null ? opts.isSticky : false;
-        this.menuControl = contextualCore.CreateEl(`<ul class='contextualJs contextualMenu'></ul>`);
+        this.menuControl = contextualCore.CreateEl(`
+            <ul class='contextualJs contextualMenu'>
+
+            </ul>`);
         opts.items.forEach(i => {
             this.menuControl.appendChild(i.element);
         });
@@ -92,12 +95,16 @@ class ContextualItem{
                             </span>
                             <span class='contextualJs contextualMenuItemTip'>${opts.shortcut == undefined? '' : opts.shortcut}</span>
                     </div>
-                    <ul class='contextualJs contextualSubMenu contextualMenuHidden'></ul>
+                    <ul class='contextualJs contextualSubMenu contextualMenuHidden'>
+                        <li class="contextualJs contextualHeader">
+                            <input type='button' value='<' class='contextualJs'/>
+                            <span class='contextualJs'>${opts.label == undefined? 'No label' : opts.label}</span>
+                        </li>
+                    </ul>
                     </li>`);               
 
-                if(opts.submenu !== undefined){
-                    let childMenu = this.element.querySelector('.contextualSubMenu');
-                            
+                let childMenu = this.element.querySelector('.contextualSubMenu');
+                if(opts.submenu !== undefined){                    
                     opts.submenu.forEach(i => {
                         childMenu.appendChild(i.element);
                     });
@@ -107,6 +114,7 @@ class ContextualItem{
                         childMenu.classList.toggle('contextualMenuHidden');
                     });
                 }else{
+                    childMenu.parentElement.removeChild(childMenu);
                     this.element.addEventListener('click', function(){
                         event.stopPropagation();
                         if(opts.onClick !== undefined){ opts.onClick(); }  

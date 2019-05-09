@@ -8,9 +8,10 @@
     margin:0;
     list-style: none;
     color: #cccccc;
+    overflow: hidden;
 }
 .contextualMenuHidden{
-    display: none;
+    left: 100% !important;
 }
 
 .contextualMenuItem{
@@ -35,7 +36,7 @@
     }
     .contextualMenuItemTip{
         float: right;
-        padding: 0px 7px 0px 50px;
+        padding: 0px 0px 0px 50px;
         text-align: right;
         line-height: 16px;
     }
@@ -43,7 +44,7 @@
         float: right;
         width:16px;
         height: 16px;
-        padding: 1px 0px 0px 0px;
+        padding: 1px 0px 0px 7px;
     }
         .contextualMenuItemOverflow .contextualMenuItemOverflowLine{
             display: block;
@@ -51,8 +52,8 @@
             margin: 3px 2px;
             background: #999;
         }
-        .contextualMenuItemOverflow.hidden .contextualMenuItemOverflowLine{
-            background: transparent;
+        .contextualMenuItemOverflow.hidden{
+            display: none;
         }
 
 .contextualMenuSeperator{
@@ -65,15 +66,45 @@
         background: #999;
     }
 
- .contextualSubMenu{
-     padding: 0;
-     margin: 0;
-     list-style: none;
-     border-top:1px solid #999;
-     border-bottom: 1px solid #999;
-     box-shadow: inset 0px 0px 15px #000 ;
+.contextualSubMenu{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    background: rgb(37, 37, 38);
+    position: absolute;
+    top: 0;
+    min-height: 100%;
+    width: 100%;
+    left: 0;
+    transition: left 0.25s;
  }
  
  .contextualSubMenu .contextualMenuItem:hover{
     background: #080a79;
  }
+
+ .contextualHeader{
+    border-bottom: 1px solid #999;
+ }
+
+    .contextualHeader input{
+        background: transparent;
+        color: #cccccc;
+        border:none;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        left:0;
+        font-weight: bold;
+    }
+    .contextualHeader input:hover{
+        background: #080a79;
+    }
+
+    .contextualHeader span{
+        width:100%;
+        text-align: center;
+        display: inline-block;
+        line-height: 30px;
+        font-weight: bold;
+    }
