@@ -74,11 +74,39 @@ class ContextualItem{
      * @param {string} [opts.icon]
      * @param {string} [opts.shortcut]
      * @param {void} [opts.onClick] 
+     * @param {string} [opts.custom]
      */
     constructor(opts){
         switch(opts.type){
             case 'seperator':
                 this.element = contextualCore.CreateEl(`<li class='contextualJs contextualMenuSeperator'><div></div></li>`);
+                break;
+            case 'custom':
+                this.element = contextualCore.CreateEl( `
+                    <li class='contextualJs'>
+                        <div class='contextualJs contextualMenuItem'>
+                            <img src='${opts.icon == undefined? '' : opts.icon}' class='contextualJs contextualMenuItemIcon'/>
+                            <span class='contextualJs contextualMenuItemTitle'>${opts.label == undefined? 'No label' : opts.label}</span>
+                            <span class='contextualJs contextualMenuItemOverflow submenu'>
+                                <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                                <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                                <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                            </span>
+                            <span class='contextualJs contextualMenuItemTip'>${opts.shortcut == undefined? '' : opts.shortcut}</span>
+                        </div>
+                        <ul class='contextualJs contextualSubMenu contextualMenuHidden'>
+                            <li class="contextualJs contextualHeader">
+                                <input type='button' value='<' class='contextualJs'/>
+                                <span class='contextualJs'>${opts.label == undefined? 'No label' : opts.label}</span>
+                            </li>
+                            <li class='contextualJs contextualCustomEl'>
+                            </li>
+                        </ul>
+                    </li>`); 
+
+                    let elOuter = document.querySelector('.contextualCustomEl');
+
+
                 break;
             case 'submenu':
             case 'normal':
@@ -94,28 +122,35 @@ class ContextualItem{
                                 <span class='contextualJs contextualMenuItemOverflowLine'></span>
                             </span>
                             <span class='contextualJs contextualMenuItemTip'>${opts.shortcut == undefined? '' : opts.shortcut}</span>
-                    </div>
-                    <ul class='contextualJs contextualSubMenu contextualMenuHidden'>
-                        <li class="contextualJs contextualHeader">
-                            <input type='button' value='<' class='contextualJs'/>
-                            <span class='contextualJs'>${opts.label == undefined? 'No label' : opts.label}</span>
-                        </li>
-                    </ul>
+                        </div>
+                        <ul class='contextualJs contextualSubMenu contextualMenuHidden'>
+                            <li class="contextualJs contextualHeader">
+                                <input type='button' value='<' class='contextualJs contextualSubMenuClose'/>
+                                <span class='contextualJs'>${opts.label == undefined? 'No label' : opts.label}</span>
+                            </li>
+                        </ul>
                     </li>`);               
 
-                let childMenu = this.element.querySelector('.contextualSubMenu');
+                let childMenu = this.element.querySelector('.contextualSubMenu'),
+                    menuItem = this.element.querySelector('.contextualMenuItem');
+
                 if(opts.submenu !== undefined){                    
                     opts.submenu.forEach(i => {
                         childMenu.appendChild(i.element);
                     });
                                 
-                    this.element.addEventListener('click',function(e){
-                        e.currentTarget.classList.toggle('SubMenuActive');
-                        childMenu.classList.toggle('contextualMenuHidden');
+                    menuItem.addEventListener('click',() => {
+                        menuItem.classList.add('SubMenuActive');
+                        childMenu.classList.remove('contextualMenuHidden');
+                    });
+
+                    childMenu.querySelector('.contextualSubMenuClose').addEventListener('click',() => {
+                        menuItem.classList.remove('SubMenuActive');
+                        childMenu.classList.add('contextualMenuHidden');
                     });
                 }else{
                     childMenu.parentElement.removeChild(childMenu);
-                    this.element.addEventListener('click', function(){
+                    this.element.addEventListener('click', () => {
                         event.stopPropagation();
                         if(opts.onClick !== undefined){ opts.onClick(); }  
                         contextualCore.CloseMenu();
