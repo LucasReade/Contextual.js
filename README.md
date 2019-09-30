@@ -1,10 +1,17 @@
 # Contextual.js
 Javascript contextual menu library - Create dynamic right click or popup menus.
 
-## Menu Items
+## Menu items
 - Sub menus
 - Seperators
 - Buttons
+
+## Menu item attributes 
+- icon
+- label
+- type
+- shortcut
+- submenu
 
 ## Examples
 
