@@ -72,6 +72,7 @@ class ContextualItem{
      * @param {Array<ContextualItem>} [opts.submenu]
      * @param {string} [opts.customMarkup]
      * @param {string} [opts.icon]
+     * @param {string} [opts.cssIcon]
      * @param {string} [opts.shortcut]
      * @param {void} [opts.onClick] 
      */
@@ -87,7 +88,8 @@ class ContextualItem{
                 this.element = contextualCore.CreateEl( `
                     <div class='contextualJs'>
                         <div class='contextualJs contextualMenuItem'>
-                            <img src='${opts.icon == undefined? '' : opts.icon}' class='contextualJs contextualMenuItemIcon'/>
+                            ${opts.icon != undefined ? `<img src='${opts.icon}' class='contextualJs contextualMenuItemIcon'/>` :
+                                `<div class='contextualJs contextualMenuItemIcon ${opts.cssIcon != undefined ? opts.cssIcon : ''}'></div>`}
                             <span class='contextualJs contextualMenuItemTitle'>${opts.label == undefined? 'No label' : opts.label}</span>
                             <span class='contextualJs contextualMenuItemOverflow ${opts.type === 'submenu' || opts.type === 'custom' ? '' : 'hidden'}'>
                                 <span class='contextualJs contextualMenuItemOverflowLine'></span>
