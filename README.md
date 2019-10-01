@@ -5,6 +5,7 @@ Javascript contextual menu library - Create dynamic right click or popup menus.
 - Sub menus
 - Seperators
 - Buttons
+- Custom content
 
 ## Examples
 
@@ -25,14 +26,15 @@ new Contextual({
 new Contextual({
   isSticky: true,
 	items:[
-    new ContextualItem({label:'Item 1', onClick: () => {console.log('Item 1 clicked')}, shortcut:'Ctrl+A' }),
-    new ContextualItem({type:'seperator'}),
-    new ContextualItem({type:'submenu', label:'Item 2', submenu:[
-      new ContextualItem({label:'Subitem 1'}),
-      new ContextualItem({label:'Subitem 2'}),
-      new ContextualItem({label:'Subitem 3'}),
-    ]}),
-  	new ContextualItem({label:'Item 3', shortcut:'Ctrl+B' }),
+    		new ContextualItem({label:'Item 1', onClick: () => {console.log('Item 1 clicked')}, shortcut:'Ctrl+A' }),
+    		new ContextualItem({type:'seperator'}),
+    		new ContextualItem({type:'submenu', label:'Item 2', title:'Submenu', submenu:[
+    			new ContextualItem({label:'Subitem 1'}),
+        		new ContextualItem({label:'Subitem 2'}),
+        		new ContextualItem({label:'Subitem 3'}),
+        		new ContextualItem({label:'Subitem 4'}),
+    		]}),
+  		new ContextualItem({label:'Item 3', shortcut:'Ctrl+B' }),
 	]
 });
 ```
