@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Contentual Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="contextual.theme.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="contextual.css">
-    <script src="./contentual.js"></script>
+    <link rel="stylesheet" type="text/css" href="contextual.theme.css">
+    <link rel="stylesheet" type="text/css" href="contextual.css">
+    <script src="contentual.js"></script>
     <style>
-        *{font-family: sans-serif;}
+        *{font-family: Verdana, Geneva, Tahoma, sans-serif;}
         body{background: rgb(30, 30, 30);}
     </style>
 </head>
@@ -19,24 +19,27 @@
         let parentControl = document.getElementById('textBtn');
         parentControl.addEventListener('click', () => {
             new Contextual({
-            isSticky: false,
-            items:[
-                new ContextualItem({label:'Stardard Item', onClick: () => {console.log('Item 1 clicked')}, shortcut:'Ctrl+A' }),
-                new ContextualItem({type:'seperator'}),
-                new ContextualItem({type:'submenu', label:'Submenu Item', submenu:[
-                    new ContextualItem({label:'Subitem 1'}),
-                    new ContextualItem({label:'Subitem 2'}),
-                    new ContextualItem({label:'Subitem 3'}),
-                    new ContextualItem({label:'Subitem 4'}),
-                ]}),
-                new ContextualItem({type:'custom', label:'Custom Item', customMarkup: `
-                    <div>
-                        <p>This is just some place holder text, but in theroy you could put anything here.</p>    
-                    </div>
-                ` }),
-            ]
+                isSticky: false,
+                items:[
+                    new ContextualItem({label:'Item 1', onClick: () => {console.log('Item 1 clicked')}, shortcut:'Ctrl+A' }),
+                    new ContextualItem({type:'seperator'}),
+                    new ContextualItem({type:'submenu', label:'Item 2', title:'Submenu', submenu:[
+                        new ContextualItem({label:'Subitem 1'}),
+                        new ContextualItem({label:'Subitem 2'}),
+                        new ContextualItem({label:'Subitem 3'}),
+                        new ContextualItem({label:'Subitem 4'}),
+                    ]}),
+                    new ContextualItem({label:'Item 3', shortcut:'Ctrl+B' }),
+                    new ContextualItem({type:'seperator'}),
+                    new ContextualItem({label:'Item 4', shortcut:'Ctrl+A' }),
+                    new ContextualItem({type:'custom', label:'Custom Item', customMarkup: `
+                        <div>
+                            <p>This is just some place holder text, but in theroy you could put anything here.</p>    
+                        </div>
+                    ` }),
+                ]
             });
-        }, false);   
+        }, false);
     </script>
 </body>
 </html>
