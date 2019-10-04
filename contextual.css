@@ -17,13 +17,16 @@
     display: block;
     padding: 5px 5px;
 }
-    .contextualMenuSeperator div{
+    .contextualMenuSeperator span{
+        display: block;
         width:100%;
         height:1px;
         background: var(--contextualSeperator);
     }
 
 /* Default menu item */
+.contextualMenuItemOuter {
+}
 .contextualMenuItem{
     display: block;
     padding: 5px 8px;
@@ -64,50 +67,32 @@
         .contextualMenuItemOverflow.hidden{
             display: none;
         }
+        
+    .contextualMenuItem.disabled{
+        opacity: 0.4;
+    }
+    .contextualMenuItem.disabled:hover{
+        background: none;
+    }
 
 /* Submenu item */ 
 .contextualSubMenu{
     padding: 0;
     margin: 0;
-    list-style: none;
     background: var(--contextualSubMenuBg);
     border-radius: var(--contextualMenuRadius);
-    position: absolute;
-    top: 0;
-    min-height: 100%;
     width: 100%;
-    left: 0;
-    transition: left 0.25s;
+    height: auto;
+    max-height: 1000px;
+    transition: max-height 0.5s;
+    overflow: hidden;
 }
-    .contextualHeader{
-        border-bottom: 1px solid var(--contextualSeperator);
-    }
-        .contextualHeader input{
-            background: transparent;
-            color: var(--contextualMenuText);
-            border:none;
-            width: 30px;
-            height: 30px;
-            position: absolute;
-            left:0;
-            font-weight: bold;
-        }
-            .contextualHeader input:hover{
-                background: var(--contextualHover);
-            }
-        .contextualHeader span{
-            width:100%;
-            text-align: center;
-            display: inline-block;
-            line-height: 30px;
-            font-weight: bold;
-        }
     .contextualSubMenu .contextualMenuItem:hover{
         background: var(--contextualHover);
     }
 
 .contextualMenuHidden{
-    left: 100% !important;
+    max-height: 0;
 }
 
     
