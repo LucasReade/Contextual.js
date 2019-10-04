@@ -1,28 +1,37 @@
+/* Main context menu outer */
 .contextualMenu{
     font-size: 13px;
     position: absolute;
     padding: 8px 0;
-    background: rgb(37, 37, 38);
-    box-shadow: 1px 1px 10px #000;
-    border-radius: 3px;
+    background: var(--contextualMenuBg);
+    box-shadow: var(--contextualMenuShadow);
+    border-radius: var(--contextualMenuRadius);
     margin:0;
     list-style: none;
-    color: #cccccc;
+    color: var(--contextualMenuText);
     overflow: hidden;
 }
-.contextualMenuHidden{
-    left: 100% !important;
-}
 
+/* Menu seperator item */
+.contextualMenuSeperator{
+    display: block;
+    padding: 5px 5px;
+}
+    .contextualMenuSeperator div{
+        width:100%;
+        height:1px;
+        background: var(--contextualSeperator);
+    }
+
+/* Default menu item */
 .contextualMenuItem{
     display: block;
     padding: 5px 8px;
     cursor: default;
 }
-.contextualMenuItem:hover{
-    background: #080a79;
-}
-
+    .contextualMenuItem:hover{
+        background: var(--contextualHover);
+    }
     .contextualMenuItemIcon{
         float: left;
         width:16px;
@@ -50,61 +59,64 @@
             display: block;
             height: 1px;
             margin: 3px 2px;
-            background: #999;
+            background: var(--contextualOverflowIcon);
         }
         .contextualMenuItemOverflow.hidden{
             display: none;
         }
 
-.contextualMenuSeperator{
-    display: block;
-    padding: 5px 5px;
-}
-    .contextualMenuSeperator div{
-        width:100%;
-        height:1px;
-        background: #999;
-    }
-
+/* Submenu item */ 
 .contextualSubMenu{
     padding: 0;
     margin: 0;
     list-style: none;
-    background: rgb(37, 37, 38);
+    background: var(--contextualSubMenuBg);
+    border-radius: var(--contextualMenuRadius);
     position: absolute;
     top: 0;
     min-height: 100%;
     width: 100%;
     left: 0;
     transition: left 0.25s;
- }
+}
+    .contextualHeader{
+        border-bottom: 1px solid var(--contextualSeperator);
+    }
+        .contextualHeader input{
+            background: transparent;
+            color: var(--contextualMenuText);
+            border:none;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            left:0;
+            font-weight: bold;
+        }
+            .contextualHeader input:hover{
+                background: var(--contextualHover);
+            }
+        .contextualHeader span{
+            width:100%;
+            text-align: center;
+            display: inline-block;
+            line-height: 30px;
+            font-weight: bold;
+        }
+    .contextualSubMenu .contextualMenuItem:hover{
+        background: var(--contextualHover);
+    }
+
+.contextualMenuHidden{
+    left: 100% !important;
+}
+
+    
+    
+        
+
+
  
- .contextualSubMenu .contextualMenuItem:hover{
-    background: #080a79;
- }
 
- .contextualHeader{
-    border-bottom: 1px solid #999;
- }
 
-    .contextualHeader input{
-        background: transparent;
-        color: #cccccc;
-        border:none;
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        left:0;
-        font-weight: bold;
-    }
-    .contextualHeader input:hover{
-        background: #080a79;
-    }
 
-    .contextualHeader span{
-        width:100%;
-        text-align: center;
-        display: inline-block;
-        line-height: 30px;
-        font-weight: bold;
-    }
+
