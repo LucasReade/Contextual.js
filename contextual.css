@@ -95,9 +95,14 @@
     max-height: 0;
 }
 
-    
-    
-        
+/* Multi item button */
+.contextualMultiItem{
+    display: flex;
+}
+    .contextualMultiItem .contextualMenuItemOuter{
+        flex: auto;
+        display: inline-block;
+    }
 
 
  

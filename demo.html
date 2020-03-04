@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="contextual.theme.css">
     <link rel="stylesheet" type="text/css" href="contextual.css">
-    <script src="contentual.js"></script>
+    <script src="contextual.js"></script>
     <style>
         *{font-family: Verdana, Geneva, Tahoma, sans-serif;}
         body{background: rgb(30, 30, 30);}
@@ -26,6 +26,11 @@
                 width: '250px',
                 items:[
                     new ContextualItem({type:'custom', markup: `<span>Custom item - add what you like</span>` }),
+                    new ContextualItem({type:'multi', items: [
+                        new ContextualItem({label:'Copy'}),
+                        new ContextualItem({label:'Cut'}),
+                        new ContextualItem({label:'Paste'}),
+                    ]}),
                     new ContextualItem({label:'Button', onClick: () => {console.log('Item 1 clicked')}, shortcut:'Ctrl+A' }),
                     new ContextualItem({type:'seperator'}),
                     new ContextualItem({type:'submenu', label:'Sub menu', submenu:[
