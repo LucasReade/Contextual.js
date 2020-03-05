@@ -33,7 +33,7 @@ class Contextual{
      * @param {ContextualItem} item item to add to the contextual menu
      */
     add(item){
-        this.menuControl.appendChild(item);
+        this.menuControl.appendChild(item.element);
     }
     /**
      * Makes this contextual menu visible
@@ -77,6 +77,8 @@ class ContextualItem{
      * @param {string} [opts.shortcut]
      * @param {void} [opts.onClick]
      * @param {boolean} [opts.enabled]
+     * @param {Array<ContextualItem>} [opts.items]
+     * 
      */
     constructor(opts){
         switch(opts.type){
@@ -85,6 +87,15 @@ class ContextualItem{
                 break;
             case 'custom':
                 this.element = contextualCore.CreateEl(`<div class='contextualJs contextualCustomEl'>${opts.markup}</div>`);
+                break;
+            case 'multi': 
+                this.element = contextualCore.CreateEl(`
+                    <div class='contextualJs contextualMultiItem'>
+                    </div>
+                `);
+                opts.items.forEach(i => {
+                    this.element.appendChild(i.element);
+                });
                 break;
             case 'submenu':
             case 'normal':
