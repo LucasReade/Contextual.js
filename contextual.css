@@ -58,6 +58,7 @@
         height: 16px;
         padding: 1px 0px 0px 7px;
     }
+
         .contextualMenuItemOverflow .contextualMenuItemOverflowLine{
             display: block;
             height: 1px;
@@ -93,6 +94,14 @@
 
 .contextualMenuHidden{
     max-height: 0;
+}
+
+.contextualMenuFloatingOverflow{
+    position: fixed;
+    left: 258px;
+    margin-top: -25px;
+    width: auto;
+    border-radius: 4px;
 }
 
 /* Multi item button */

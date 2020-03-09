@@ -78,6 +78,7 @@ class ContextualItem{
      * @param {void} [opts.onClick]
      * @param {boolean} [opts.enabled]
      * @param {Array<ContextualItem>} [opts.items]
+     * @param {string} [opts.submenuPos]
      * 
      */
     constructor(opts){
@@ -113,7 +114,7 @@ class ContextualItem{
                             </span>
                             <span class='contextualJs contextualMenuItemTip'>${opts.shortcut == undefined? '' : opts.shortcut}</span>
                         </div>
-                        <div class='contextualJs contextualSubMenu contextualMenuHidden'>
+                        <div class='contextualJs contextualSubMenu contextualMenuHidden ${opts.submenuPos === undefined ? '' : opts.submenuPos === 'float' ? 'contextualMenuFloatingOverflow' : ''}'>
                         </div>
                     </div>`);               
 
