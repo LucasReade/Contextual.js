@@ -15,6 +15,7 @@ Javascript contextual menu library - Create dynamic right click or popup menus.
 - Seperators
 - Buttons
 - Custom element
+- Multi buttons
 
 ### Options 
 - icon
@@ -32,23 +33,24 @@ Javascript contextual menu library - Create dynamic right click or popup menus.
 ### Bit of everything
 ```
 new Contextual({
-  isSticky: false,
+  isSticky: true,
   width: '250px',
-  items:[
-    new ContextualItem({type:'custom', markup: `
-      <div>
-        <span>Custom item - add what you like</span>    
-      </div>
-    ` }),
-    new ContextualItem({label:'Button', onClick: () => {console.log('Item 1 clicked')}, shortcut:'Ctrl+A' }),
-    new ContextualItem({type:'seperator'}),
-    new ContextualItem({type:'submenu', label:'Sub menu', submenu:[
-      new ContextualItem({label:'Subitem 1'}),
-      new ContextualItem({label:'Subitem 2'}),
-      new ContextualItem({label:'Subitem 3'}),
-    ]}),
-    new ContextualItem({label:'Disabled button', shortcut:'Ctrl+B', enabled: false }),
+  items: [
+    {type: 'custom', markup: `<span>Custom item - add what you like</span>`},
+    {type: 'multi', items: [
+      {label: 'Copy'},
+      {label: 'Cut'},
+      {label: 'Paste'},
+    ]},
+    {label: 'Button', onClick: () => {console.log('Item 1 clicked')}, shortcut: 'Ctrl+A'},
+    {type: 'seperator'},
+    {type: 'submenu', label: 'Sub menu', submenu: [
+      {label: 'Subitem 1'},
+      {label: 'Subitem 2'},
+      {label: 'Subitem 3'},
+    ]},
+    {label: 'Disabled button', shortcut: 'Ctrl+B', enabled: false},
   ]
- });
+});
 ```
 

@@ -13,7 +13,8 @@ class Contextual{
         this.menuControl = contextualCore.CreateEl(`<div class='contextualJs contextualMenu'></div>`);
         this.menuControl.style.width = opts.width != null ? opts.width : '200px';
         opts.items.forEach(i => {
-            this.menuControl.appendChild(i.element);
+            let item = new ContextualItem(i);
+            this.menuControl.appendChild(item.element);
         });
             
         if(event != undefined){
@@ -64,13 +65,12 @@ class Contextual{
     }
 }  
 class ContextualItem{
+    element;
     /**
      * 
      * @param {Object} opts
      * @param {string} [opts.label]
-     * @param {string} [opts.title]
      * @param {string} [opts.type]
-     * @param {Array<ContextualItem>} [opts.submenu]
      * @param {string} [opts.markup]
      * @param {string} [opts.icon]
      * @param {string} [opts.cssIcon]
@@ -78,74 +78,96 @@ class ContextualItem{
      * @param {void} [opts.onClick]
      * @param {boolean} [opts.enabled]
      * @param {Array<ContextualItem>} [opts.items]
-     * @param {string} [opts.submenuPos]
      * 
      */
     constructor(opts){
         switch(opts.type){
             case 'seperator':
-                this.element = contextualCore.CreateEl(`<div class='contextualJs contextualMenuSeperator'><span></span></div>`);
+                this.seperator();
                 break;
             case 'custom':
-                this.element = contextualCore.CreateEl(`<div class='contextualJs contextualCustomEl'>${opts.markup}</div>`);
+                this.custom(opts.markup);
                 break;
             case 'multi': 
-                this.element = contextualCore.CreateEl(`
-                    <div class='contextualJs contextualMultiItem'>
-                    </div>
-                `);
-                opts.items.forEach(i => {
-                    this.element.appendChild(i.element);
-                });
+                this.multiButton(opts.items);
                 break;
             case 'submenu':
+                this.subMenu(opts.label, opts.items, (opts.icon !== undefined ? opts.icon : ''), (opts.cssIcon !== undefined ? opts.cssIcon : ''), (opts.enabled !== undefined ? opts.enabled : true));
+                break;
             case 'normal':
             default:
-                this.element = contextualCore.CreateEl( `
-                    <div class='contextualJs contextualMenuItemOuter'>
-                        <div class='contextualJs contextualMenuItem ${opts.enabled == true || opts.enabled == undefined ? '' : 'disabled'}'>
-                            ${opts.icon != undefined? `<img src='${opts.icon}' class='contextualJs contextualMenuItemIcon'/>` :
-                                `<div class='contextualJs contextualMenuItemIcon ${opts.cssIcon != undefined ? opts.cssIcon : ''}'></div>`}
-                            <span class='contextualJs contextualMenuItemTitle'>${opts.label == undefined? 'No label' : opts.label}</span>
-                            <span class='contextualJs contextualMenuItemOverflow ${opts.type === 'submenu' ? '' : 'hidden'}'>
-                                <span class='contextualJs contextualMenuItemOverflowLine'></span>
-                                <span class='contextualJs contextualMenuItemOverflowLine'></span>
-                                <span class='contextualJs contextualMenuItemOverflowLine'></span>
-                            </span>
-                            <span class='contextualJs contextualMenuItemTip'>${opts.shortcut == undefined? '' : opts.shortcut}</span>
-                        </div>
-                        <div class='contextualJs contextualSubMenu contextualMenuHidden ${opts.submenuPos === undefined ? '' : opts.submenuPos === 'float' ? 'contextualMenuFloatingOverflow' : ''}'>
-                        </div>
-                    </div>`);               
-
-                let childMenu = this.element.querySelector('.contextualSubMenu'),
-                    menuItem = this.element.querySelector('.contextualMenuItem');
-
-                if(opts.submenu !== undefined){    
-                    
-                    if(opts.submenu !== undefined) {
-                        opts.submenu.forEach(i => {
-                            childMenu.appendChild(i.element);
-                        });
-                    }
-                    
-                    if(opts.enabled == true || opts.enabled == undefined){
-                        menuItem.addEventListener('click',() => {
-                            menuItem.classList.toggle('SubMenuActive');
-                            childMenu.classList.toggle('contextualMenuHidden');
-                        });
-                    }
-                }else{
-                    if(opts.enabled == true || opts.enabled == undefined){
-                        childMenu.parentElement.removeChild(childMenu);
-                        this.element.addEventListener('click', () => {
-                            event.stopPropagation();
-                            if(opts.onClick !== undefined){ opts.onClick(); }  
-                            contextualCore.CloseMenu();
-                        });
-                    }
-                }     
+                this.button(opts.label, opts.onClick, (opts.shortcut !== undefined ? opts.shortcut : ''), (opts.icon !== undefined ? opts.icon : ''), (opts.cssIcon !== undefined ? opts.cssIcon : ''), (opts.enabled !== undefined ? opts.enabled : true));       
         }
+    }
+
+    button(label, onClick, shortcut = '', icon = '', cssIcon = '', enabled = true){
+        this.element = contextualCore.CreateEl( `
+            <div class='contextualJs contextualMenuItemOuter'>
+                <div class='contextualJs contextualMenuItem ${enabled == true ? '' : 'disabled'}'>
+                    ${icon != ''? `<img src='${icon}' class='contextualJs contextualMenuItemIcon'/>` : `<div class='contextualJs contextualMenuItemIcon ${cssIcon != '' ? cssIcon : ''}'></div>`}
+                    <span class='contextualJs contextualMenuItemTitle'>${label == undefined? 'No label' : label}</span>
+                    <span class='contextualJs contextualMenuItemTip'>${shortcut == ''? '' : shortcut}</span>
+                </div>
+            </div>`);               
+
+            if(enabled == true){
+                this.element.addEventListener('click', () => {
+                    event.stopPropagation();
+                    if(onClick !== undefined){ onClick(); }  
+                    contextualCore.CloseMenu();
+                });
+            } 
+    }
+    custom(markup){
+        this.element = contextualCore.CreateEl(`<div class='contextualJs contextualCustomEl'>${markup}</div>`);
+    }
+    hoverMenu(){
+        this.element = ``;
+    }
+    multiButton(buttons) {
+        this.element = contextualCore.CreateEl(`
+            <div class='contextualJs contextualMultiItem'>
+            </div>
+        `);
+        buttons.forEach(i => {
+            let item = new ContextualItem(i);
+            this.element.appendChild(item.element);
+        });
+    }
+    subMenu(label, items, icon = '', cssIcon = '', enabled = true){
+        this.element = contextualCore.CreateEl( `
+            <div class='contextualJs contextualMenuItemOuter'>
+                <div class='contextualJs contextualMenuItem ${enabled == true ? '' : 'disabled'}'>
+                    ${icon != ''? `<img src='${icon}' class='contextualJs contextualMenuItemIcon'/>` : `<div class='contextualJs contextualMenuItemIcon ${cssIcon != '' ? cssIcon : ''}'></div>`}
+                    <span class='contextualJs contextualMenuItemTitle'>${label == undefined? 'No label' : label}</span>
+                    <span class='contextualJs contextualMenuItemOverflow'>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                        <span class='contextualJs contextualMenuItemOverflowLine'></span>
+                    </span>
+                </div>
+                <div class='contextualJs contextualSubMenu contextualMenuHidden'>
+                </div>
+            </div>`); 
+
+        let childMenu = this.element.querySelector('.contextualSubMenu'),
+            menuItem = this.element.querySelector('.contextualMenuItem');
+
+        if(items !== undefined) {
+            items.forEach(i => {
+                let item = new ContextualItem(i);
+                childMenu.appendChild(item.element);
+            });
+        }
+        if(enabled == true){
+            menuItem.addEventListener('click',() => {
+                menuItem.classList.toggle('SubMenuActive');
+                childMenu.classList.toggle('contextualMenuHidden');
+            });
+        }
+    }
+    seperator(label, items) {
+        this.element = contextualCore.CreateEl(`<div class='contextualJs contextualMenuSeperator'><span></span></div>`);
     }
 }
 
