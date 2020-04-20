@@ -94,6 +94,9 @@ class ContextualItem{
             case 'submenu':
                 this.subMenu(opts.label, opts.items, (opts.icon !== undefined ? opts.icon : ''), (opts.cssIcon !== undefined ? opts.cssIcon : ''), (opts.enabled !== undefined ? opts.enabled : true));
                 break;
+            case 'hovermenu': 
+                this.hoverMenu(opts.label, opts.items, (opts.icon !== undefined ? opts.icon : ''), (opts.cssIcon !== undefined ? opts.cssIcon : ''), (opts.enabled !== undefined ? opts.enabled : true));
+                break;
             case 'normal':
             default:
                 this.button(opts.label, opts.onClick, (opts.shortcut !== undefined ? opts.shortcut : ''), (opts.icon !== undefined ? opts.icon : ''), (opts.cssIcon !== undefined ? opts.cssIcon : ''), (opts.enabled !== undefined ? opts.enabled : true));       
@@ -121,8 +124,36 @@ class ContextualItem{
     custom(markup){
         this.element = contextualCore.CreateEl(`<div class='contextualJs contextualCustomEl'>${markup}</div>`);
     }
-    hoverMenu(){
-        this.element = ``;
+    hoverMenu(label, items, icon = '', cssIcon = '', enabled = true){
+        this.element = contextualCore.CreateEl(`
+            <div class='contextualJs contextualHoverMenuOuter'>
+                <div class='contextualJs contextualHoverMenuItem ${enabled == true ? '' : 'disabled'}'>
+                    ${icon != ''? `<img src='${icon}' class='contextualJs contextualMenuItemIcon'/>` : `<div class='contextualJs contextualMenuItemIcon ${cssIcon != '' ? cssIcon : ''}'></div>`}
+                    <span class='contextualJs contextualMenuItemTitle'>${label == undefined? 'No label' : label}</span>
+                    <span class='contextualJs contextualMenuItemOverflow'>></span>
+                </div>
+                <div class='contextualJs contextualHoverMenu'>
+                </div>
+            </div>
+        `);
+
+        let childMenu = this.element.querySelector('.contextualHoverMenu'),
+        menuItem = this.element.querySelector('.contextualHoverMenuItem');
+
+        if(items !== undefined) {
+            items.forEach(i => {
+                let item = new ContextualItem(i);
+                childMenu.appendChild(item.element);
+            });
+        }
+        if(enabled == true){
+            menuItem.addEventListener('mouseenter', () => {
+
+            });
+            menuItem.addEventListener('mouseleave', () => {
+                
+            });
+        }
     }
     multiButton(buttons) {
         this.element = contextualCore.CreateEl(`
@@ -201,3 +232,4 @@ const contextualCore = {
         return el.firstElementChild;
     }
 };
+

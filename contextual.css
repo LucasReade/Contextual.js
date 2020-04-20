@@ -96,14 +96,6 @@
     max-height: 0;
 }
 
-.contextualMenuFloatingOverflow{
-    position: fixed;
-    left: 258px;
-    margin-top: -25px;
-    width: auto;
-    border-radius: 4px;
-}
-
 /* Multi item button */
 .contextualMultiItem{
     display: flex;
@@ -113,9 +105,37 @@
         display: inline-block;
     }
 
+/* Hover menu */
+.contextualHoverMenuOuter{
+    position: relative;
+}
+.contextualHoverMenuItem{
+    display: block;
+    padding: 5px 8px;
+    cursor: default;
+}
+.contextualHoverMenuItem.disabled{
+    opacity: 0.4;
+}
+.contextualHoverMenuItem.disabled:hover{
+    background: none;
+}
+.contextualHoverMenuItem:hover{
+    background: var(--contextualHover);
+}
 
- 
-
-
-
-
+.contextualHoverMenuOuter > .contextualHoverMenu{
+    display: none;
+}
+.contextualHoverMenuOuter:hover > .contextualHoverMenu{
+    display: block;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: var(--contextualMenuBg);
+    box-shadow: var(--contextualMenuShadow);
+    border-radius: var(--contextualMenuRadius);
+    padding: 8px 0;
+    width: 100%;
+    z-index: 1000;
+}
