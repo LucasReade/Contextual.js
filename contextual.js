@@ -10,7 +10,7 @@ class Contextual{
         contextualCore.CloseMenu();
 
         this.position = opts.isSticky != null ? opts.isSticky : false;
-        this.menuControl = contextualCore.CreateEl(`<div class='contextualJs contextualMenu'></div>`);
+        this.menuControl = contextualCore.CreateEl(`<ul class='contextualJs contextualMenu'></ul>`);
         this.menuControl.style.width = opts.width != null ? opts.width : '200px';
         opts.items.forEach(i => {
             let item = new ContextualItem(i);
@@ -105,13 +105,13 @@ class ContextualItem{
 
     button(label, onClick, shortcut = '', icon = '', cssIcon = '', enabled = true){
         this.element = contextualCore.CreateEl( `
-            <div class='contextualJs contextualMenuItemOuter'>
+            <li class='contextualJs contextualMenuItemOuter'>
                 <div class='contextualJs contextualMenuItem ${enabled == true ? '' : 'disabled'}'>
                     ${icon != ''? `<img src='${icon}' class='contextualJs contextualMenuItemIcon'/>` : `<div class='contextualJs contextualMenuItemIcon ${cssIcon != '' ? cssIcon : ''}'></div>`}
                     <span class='contextualJs contextualMenuItemTitle'>${label == undefined? 'No label' : label}</span>
                     <span class='contextualJs contextualMenuItemTip'>${shortcut == ''? '' : shortcut}</span>
                 </div>
-            </div>`);               
+            </li>`);               
 
             if(enabled == true){
                 this.element.addEventListener('click', () => {
@@ -122,19 +122,19 @@ class ContextualItem{
             } 
     }
     custom(markup){
-        this.element = contextualCore.CreateEl(`<div class='contextualJs contextualCustomEl'>${markup}</div>`);
+        this.element = contextualCore.CreateEl(`<li class='contextualJs contextualCustomEl'>${markup}</li>`);
     }
     hoverMenu(label, items, icon = '', cssIcon = '', enabled = true){
         this.element = contextualCore.CreateEl(`
-            <div class='contextualJs contextualHoverMenuOuter'>
+            <li class='contextualJs contextualHoverMenuOuter'>
                 <div class='contextualJs contextualHoverMenuItem ${enabled == true ? '' : 'disabled'}'>
                     ${icon != ''? `<img src='${icon}' class='contextualJs contextualMenuItemIcon'/>` : `<div class='contextualJs contextualMenuItemIcon ${cssIcon != '' ? cssIcon : ''}'></div>`}
                     <span class='contextualJs contextualMenuItemTitle'>${label == undefined? 'No label' : label}</span>
                     <span class='contextualJs contextualMenuItemOverflow'>></span>
                 </div>
-                <div class='contextualJs contextualHoverMenu'>
-                </div>
-            </div>
+                <ul class='contextualJs contextualHoverMenu'>
+                </ul>
+            </li>
         `);
 
         let childMenu = this.element.querySelector('.contextualHoverMenu'),
@@ -157,8 +157,8 @@ class ContextualItem{
     }
     multiButton(buttons) {
         this.element = contextualCore.CreateEl(`
-            <div class='contextualJs contextualMultiItem'>
-            </div>
+            <li class='contextualJs contextualMultiItem'>
+            </li>
         `);
         buttons.forEach(i => {
             let item = new ContextualItem(i);
@@ -167,7 +167,7 @@ class ContextualItem{
     }
     subMenu(label, items, icon = '', cssIcon = '', enabled = true){
         this.element = contextualCore.CreateEl( `
-            <div class='contextualJs contextualMenuItemOuter'>
+            <li class='contextualJs contextualMenuItemOuter'>
                 <div class='contextualJs contextualMenuItem ${enabled == true ? '' : 'disabled'}'>
                     ${icon != ''? `<img src='${icon}' class='contextualJs contextualMenuItemIcon'/>` : `<div class='contextualJs contextualMenuItemIcon ${cssIcon != '' ? cssIcon : ''}'></div>`}
                     <span class='contextualJs contextualMenuItemTitle'>${label == undefined? 'No label' : label}</span>
@@ -177,9 +177,9 @@ class ContextualItem{
                         <span class='contextualJs contextualMenuItemOverflowLine'></span>
                     </span>
                 </div>
-                <div class='contextualJs contextualSubMenu contextualMenuHidden'>
-                </div>
-            </div>`); 
+                <ul class='contextualJs contextualSubMenu contextualMenuHidden'>
+                </ul>
+            </li>`); 
 
         let childMenu = this.element.querySelector('.contextualSubMenu'),
             menuItem = this.element.querySelector('.contextualMenuItem');
@@ -198,7 +198,7 @@ class ContextualItem{
         }
     }
     seperator(label, items) {
-        this.element = contextualCore.CreateEl(`<div class='contextualJs contextualMenuSeperator'><span></span></div>`);
+        this.element = contextualCore.CreateEl(`<li class='contextualJs contextualMenuSeperator'><span></span></li>`);
     }
 }
 

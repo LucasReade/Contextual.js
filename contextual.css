@@ -9,12 +9,12 @@
     margin:0;
     list-style: none;
     color: var(--contextualMenuText);
-    overflow: hidden;
 }
 
 /* Menu seperator item */
 .contextualMenuSeperator{
     display: block;
+    position: relative;
     padding: 5px 5px;
 }
     .contextualMenuSeperator span{
@@ -26,6 +26,7 @@
 
 /* Default menu item */
 .contextualMenuItemOuter {
+    position: relative;
 }
 .contextualMenuItem{
     display: block;
@@ -99,6 +100,7 @@
 /* Multi item button */
 .contextualMultiItem{
     display: flex;
+    position: relative;
 }
     .contextualMultiItem .contextualMenuItemOuter{
         flex: auto;
@@ -138,4 +140,5 @@
     padding: 8px 0;
     width: 100%;
     z-index: 1000;
+    list-style: none;
 }
