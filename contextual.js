@@ -118,7 +118,7 @@ class ContextualItem{
                     event.stopPropagation();
                     if(onClick !== undefined){ onClick(); }  
                     contextualCore.CloseMenu();
-                });
+                }, false);
             } 
     }
     custom(markup){
@@ -194,7 +194,7 @@ class ContextualItem{
             menuItem.addEventListener('click',() => {
                 menuItem.classList.toggle('SubMenuActive');
                 childMenu.classList.toggle('contextualMenuHidden');
-            });
+            }, false);
         }
     }
     seperator(label, items) {
@@ -232,4 +232,3 @@ const contextualCore = {
         return el.firstElementChild;
     }
 };
-
